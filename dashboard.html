@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+            rel="stylesheet">
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+            rel="stylesheet">
+            <!-- Tambahkan ini di head -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Rubik:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
+
+
+            <!-- Tambahkan di atas semua script JS kamu -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .dashboard-container {
+            margin-top: 30px;
+        }
+        .book-list {
+            margin-top: 20px;
+        }
+        .book-card {
+            margin-bottom: 20px;
+        }
+        .book-card img {
+            max-width: 180px;
+            max-height: 240px;
+            margin-top: 16px;
+            border: 3px solid #fff;
+            border-radius: 14px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.10), 0 1.5px 6px rgba(0,0,0,0.08);
+            background: rgba(255,255,255,0.85);
+        }
+        .book-card .btn-danger {
+            margin-left: 10px;
+        }
+        .footer {
+            margin-top: 40px;
+            padding: 20px;
+            text-align: center;
+            background-color: #f1f1f1;
+        }
+
+        /* Styling untuk bagian header */
+        .dashboard-header {
+            background-color: #007bff;
+            color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-header > * {
+            display: block;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .dashboard-header h2 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+            background: linear-gradient(90deg, #fff 30%, #b3e0ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.25), 0 2px 8px rgba(0,0,0,0.10);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            animation: fadeInDown 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        @keyframes fadeInDown {
+            0% { opacity: 0; transform: translateY(-40px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .dashboard-header .dashboard-tagline {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #0056b3;
+            background: rgba(255,255,255,0.85);
+            padding: 10px 22px;
+            border-radius: 20px;
+            margin-top: 10px;
+            display: inline-block;
+            box-shadow: 0 2px 8px rgba(0,123,255,0.08);
+            letter-spacing: 0.5px;
+        }
+
+        .dashboard-header p {
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        .dashboard-header .badge {
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding: 10px;
+            display: inline-block;
+            width: auto;
+        }
+
+        /* Efek Animasi pada Judul */
+        .animate__animated {
+            animation-duration: 1s;
+            animation-timing-function: ease-in-out;
+        }
+
+        .animate__fadeInUp {
+            animation-name: fadeInUp;
+        }
+
+        /* Menambahkan efek bayangan */
+        .shadow-effect {
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .progress-bar {
+            width: 70%;
+        }
+        .progress-input {
+            width: 80px;
+            margin-left: 65px;
+        }
+        .card-footer {
+            background:none;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        /* CSS untuk Toast */
+        .toast-container {
+            z-index: 1050; /* Agar toast muncul di atas elemen lainnya */
+        }
+
+        .toast {
+            min-width: 300px;
+        }
+
+        /* Navbar Modern */
+        .navbar {
+            background: linear-gradient(90deg, #007bff 60%, #00c6ff 100%) !important;
+            box-shadow: 0 4px 18px rgba(0, 123, 255, 0.10), 0 1.5px 6px rgba(0,0,0,0.08);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 0 0 18px 18px;
+            position: sticky;
+            top: 0;
+            z-index: 1100;
+            transition: background 0.3s;
+        }
+        .navbar h2 {
+            color: white;
+            margin-left: 12px;
+            font-family: 'Raleway', sans-serif;
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 0;
+            white-space: nowrap;
+        }
+        .navbar-brand img {
+            height: 65px;
+            padding: 6px 12px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .navbar-brand img:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15), 0 3px 8px rgba(0,0,0,0.1);
+            background: rgba(255,255,255,1);
+        }
+        .navbar .btn-logout {
+            background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+            color: #dc3545;
+            border: 2px solid rgba(220,53,69,0.2);
+            border-radius: 25px;
+            font-weight: 600;
+            padding: 10px 24px;
+            box-shadow: 0 4px 12px rgba(220,53,69,0.08), 0 2px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .navbar .btn-logout:hover {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: #fff;
+            border-color: #dc3545;
+            box-shadow: 0 6px 20px rgba(220,53,69,0.25), 0 3px 10px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        .navbar .btn-logout:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(220,53,69,0.15);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 991.98px) {
+            .dashboard-header {
+                padding: 28px 10px;
+            }
+            .dashboard-header h2 {
+                font-size: 2rem;
+            }
+            .dashboard-header .dashboard-tagline {
+                font-size: 1rem;
+                padding: 8px 12px;
+            }
+            .navbar-brand img {
+                height: 44px;
+                padding: 2px 6px;
+            }
+        }
+        @media (max-width: 767.98px) {
+            .dashboard-container {
+                margin-top: 16px;
+                padding: 0 6px;
+            }
+            .dashboard-header {
+                padding: 18px 4px;
+                margin-bottom: 18px;
+            }
+            .dashboard-header h2 {
+                font-size: 1.3rem;
+                gap: 6px;
+            }
+            .dashboard-header .dashboard-tagline {
+                font-size: 0.95rem;
+                padding: 6px 8px;
+            }
+            .book-card {
+                margin-bottom: 14px;
+            }
+            .book-card .row.g-0 {
+                flex-direction: column;
+            }
+            .book-card img {
+                max-width: 100%;
+                max-height: 180px;
+                margin: 16px auto 10px auto;
+                display: block;
+                border: 3px solid #fff;
+                border-radius: 12px;
+                box-shadow: 0 4px 16px rgba(0,0,0,0.10), 0 1.5px 6px rgba(0,0,0,0.08);
+                background: rgba(255,255,255,0.85);
+            }
+            .progress-container {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+                width: 100%;
+            }
+            .progress-container > span,
+            .progress-container > input,
+            .progress-container > button {
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+            .progress-input {
+                width: 100%;
+                min-width: 0;
+                margin-left: 0;
+                margin-bottom: 4px;
+            }
+            .progress-container > button {
+                margin-left: 0;
+            }
+            .card-footer {
+                flex-direction: column;
+                align-items: flex-end;
+            }
+            .navbar .btn-logout {
+                padding: 7px 16px;
+                font-size: 0.95rem;
+            }
+        }
+        @media (max-width: 576px) {
+            .dashboard-container {
+                margin-top: 8px;
+                padding: 0 6px;
+            }
+            .dashboard-header {
+                padding: 20px 12px;
+                margin-bottom: 20px;
+                border-radius: 8px;
+            }
+            .dashboard-header h2 {
+                font-size: 1.4rem;
+                gap: 6px;
+            }
+            .dashboard-header .dashboard-tagline {
+                font-size: 0.95rem;
+                padding: 6px 8px;
+            }
+            .section-title {
+                font-size: 1.3rem;
+                gap: 8px;
+                margin-bottom: 8px;
+            }
+            .section-desc {
+                font-size: 0.9rem;
+                margin-bottom: 12px;
+            }
+            .form-control, .form-select {
+                padding: 10px 12px;
+                font-size: 16px;
+                border-radius: 8px;
+            }
+            .btn {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+                border-radius: 6px;
+            }
+            .book-card {
+                margin-bottom: 12px;
+            }
+            .accordion-button {
+                padding: 12px 15px;
+                font-size: 0.9rem;
+            }
+            .accordion-body {
+                padding: 15px;
+            }
+            /* Hapus/override flex-direction column pada .section-desc.d-flex agar tetap row */
+            .section-desc.d-flex {
+                flex-direction: row !important;
+                align-items: center !important;
+                flex-wrap: nowrap;
+                gap: 8px;
+            }
+            .section-desc .btn-group {
+                gap: 4px;
+            }
+            .section-desc .btn {
+                font-size: 0.8rem;
+                padding: 5px 8px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .dashboard-container {
+                margin-top: 6px;
+                padding: 0 4px;
+            }
+            .dashboard-header {
+                padding: 15px 10px;
+                margin-bottom: 15px;
+            }
+            .dashboard-header h2 {
+                font-size: 1.2rem;
+            }
+            .dashboard-header .dashboard-tagline {
+                font-size: 0.9rem;
+                padding: 5px 6px;
+            }
+            .section-title {
+                font-size: 1.1rem;
+            }
+            .form-control, .form-select {
+                padding: 8px 10px;
+            }
+            .btn {
+                padding: 6px 10px;
+                font-size: 0.85rem;
+            }
+            .accordion-button {
+                padding: 10px 12px;
+                font-size: 0.85rem;
+            }
+            .accordion-body {
+                padding: 12px;
+            }
+        }
+        
+        @media (max-width: 375px) {
+            .dashboard-container {
+                margin-top: 4px;
+                padding: 0 2px;
+            }
+            .dashboard-header {
+                padding: 12px 8px;
+                margin-bottom: 12px;
+            }
+            .dashboard-header h2 {
+                font-size: 1.1rem;
+                gap: 4px;
+            }
+            .dashboard-header .dashboard-tagline {
+                font-size: 0.85rem;
+                padding: 4px 5px;
+            }
+            .section-title {
+                font-size: 1rem;
+                gap: 6px;
+            }
+            .section-desc {
+                font-size: 0.85rem;
+                margin-bottom: 10px;
+            }
+            .form-control, .form-select {
+                padding: 6px 8px;
+                font-size: 16px;
+                border-radius: 6px;
+            }
+            .btn {
+                padding: 5px 8px;
+                font-size: 0.8rem;
+                border-radius: 5px;
+            }
+            .accordion-button {
+                padding: 8px 10px;
+                font-size: 0.8rem;
+                min-height: 50px;
+            }
+            .accordion-body {
+                padding: 10px;
+            }
+            .book-card img {
+                max-width: 80px;
+                max-height: 100px;
+            }
+        }
+        
+        @media (max-width: 320px) {
+            .dashboard-container {
+                margin-top: 2px;
+                padding: 0 1px;
+            }
+            .dashboard-header {
+                padding: 10px 6px;
+                margin-bottom: 10px;
+            }
+            .dashboard-header h2 {
+                font-size: 1rem;
+            }
+            .dashboard-header .dashboard-tagline {
+                font-size: 0.8rem;
+                padding: 3px 4px;
+            }
+            .section-title {
+                font-size: 0.95rem;
+            }
+            .form-control, .form-select {
+                padding: 5px 6px;
+            }
+            .btn {
+                padding: 4px 6px;
+                font-size: 0.75rem;
+            }
+            .accordion-button {
+                padding: 6px 8px;
+                font-size: 0.75rem;
+                min-height: 45px;
+            }
+            .accordion-body {
+                padding: 8px;
+            }
+        }
+        
+        /* Landscape orientation for mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .dashboard-container {
+                margin-top: 5px;
+            }
+            .dashboard-header {
+                padding: 10px 15px;
+                margin-bottom: 10px;
+            }
+            .dashboard-header h2 {
+                font-size: 1.2rem;
+                margin-bottom: 8px;
+            }
+            .dashboard-header .dashboard-tagline {
+                font-size: 0.9rem;
+                padding: 4px 6px;
+            }
+            .section-title {
+                font-size: 1.1rem;
+                margin-bottom: 5px;
+            }
+            .section-desc {
+                font-size: 0.85rem;
+                margin-bottom: 8px;
+            }
+            .mb-3 {
+                margin-bottom: 8px !important;
+            }
+            .book-list {
+                margin-top: 15px;
+            }
+        }
+        
+        /* Tablet optimization */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .dashboard-container {
+                margin-top: 20px;
+                padding: 0 15px;
+            }
+            .dashboard-header {
+                padding: 30px 25px;
+                margin-bottom: 25px;
+            }
+            .dashboard-header h2 {
+                font-size: 2.2rem;
+            }
+            .section-title {
+                font-size: 1.3rem;
+            }
+            .form-control, .form-select {
+                padding: 12px 15px;
+            }
+            .btn {
+                padding: 10px 15px;
+            }
+        }
+        .book-card .col-md-4 {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        /* Judul Section dengan Inovasi */
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.45rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #007bff 40%, #00c6ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            margin-bottom: 2px;
+            position: relative;
+            animation: fadeInLeft 0.8s;
+        }
+        .section-title .fa {
+            font-size: 1.3em;
+        }
+        .section-underline {
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #00c6ff 0%, #007bff 100%);
+            border-radius: 2px;
+            margin-bottom: 10px;
+            margin-top: 2px;
+            animation: fadeInRight 0.8s;
+        }
+        .section-desc {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 12px;
+            font-weight: 400;
+            animation: fadeInUp 0.8s;
+        }
+        /* Styling untuk section dengan tombol kontrol */
+        .section-desc.d-flex {
+            display: flex;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+            gap: 10px;
+            width: 100%;
+            overflow-x: auto;
+        }
+        .section-desc .btn-group {
+            display: flex;
+            gap: 5px;
+            flex-shrink: 0;
+        }
+        .section-desc .btn {
+            padding: 6px 10px;
+            font-size: 0.85rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        .section-desc .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .form-control, .form-select {
+            padding: 10px 12px;
+            font-size: 16px;
+            border-radius: 8px;
+        }
+        /* Styling untuk fitur kamera */
+        #cameraBtn {
+            min-width: 50px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        #cameraBtn:hover {
+            background-color: #007bff;
+            color: white;
+            transform: scale(1.05);
+        }
+        #cameraBtn:active {
+            transform: scale(0.95);
+        }
+        .camera-input-group {
+            display: flex;
+            gap: 8px;
+            align-items: stretch;
+        }
+        .camera-input-group .form-control {
+            flex: 1;
+        }
+        .camera-input-group .btn {
+            flex-shrink: 0;
+        }
+        /* Modal kamera styling */
+        #cameraPreviewModal .modal-body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        #cameraPreview {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 2px solid #fff;
+        }
+        @keyframes fadeInLeft {
+            0% { opacity: 0; transform: translateX(-30px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeInRight {
+            0% { opacity: 0; transform: translateX(30px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        /* Responsivitas untuk fitur kamera */
+        .d-flex.gap-2 {
+            flex-direction: column;
+            gap: 6px !important;
+        }
+    </style>
+    </head>
+    <body>
+        <!-- =================== NAVBAR =================== -->
+        <!-- =================== NAVBAR =================== -->
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid">
+                <div class="d-flex align-items-center">
+                    <a class="navbar-brand me-3" href="#">
+                        <img src="asset/logo02.png" alt="Logo">
+                    </a>
+                    <h2>Selamat datang, <span id="usernameDisplay"></span>!</h2>
+                </div>
+        
+                <div class="d-flex align-items-center">
+                    <div id="bookContainer"></div>
+                    <button id="logoutButton" class="btn btn-logout ms-3">Logout</button>
+                </div>
+            </div>
+        </nav>
+        
+
+        <!-- =================== HEADER =================== -->
+        <div class="container dashboard-container">
+            <div class="row">
+                <div
+                    class="col-12 dashboard-header animate__animated animate__fadeInUp">
+                    <h2><i class="fas fa-book-open"></i> Wacana</h2>
+                    <div class="dashboard-tagline">Kelola bacaanmu, capai target
+                        membaca, dan temukan inspirasi setiap hari!</div>
+                    <span class="badge">Menambah buku lebih mudah dari
+                        sebelumnya</span>
+                </div>
+                <div class="col-12">
+                    <div class="section-title"><i
+                            class="fas fa-book-medical"></i> Tambah Buku ke
+                        Daftar Bacaan</div>
+                    <div class="section-underline"></div>
+                    <div class="section-desc">Isi data buku yang ingin kamu baca
+                        dan kelola progres bacaanmu dengan mudah.</div>
+<form id="addBookForm" enctype="multipart/form-data">
+  <!-- Judul Buku -->
+  <div class="mb-3">
+    <label for="bookTitle" class="form-label">Judul Buku</label>
+    <input type="text" class="form-control" id="bookTitle" required>
+  </div>
+
+  <!-- Penulis Buku -->
+  <div class="mb-3">
+    <label for="bookAuthor" class="form-label">Penulis</label>
+    <input type="text" class="form-control" id="bookAuthor" required>
+  </div>
+
+  <!-- Genre Buku -->
+  <div class="mb-3">
+    <label for="bookGenre" class="form-label">Genre Buku</label>
+    <select class="form-select" id="bookGenre" required>
+      <option value disabled selected>Pilih Genre Buku</option>
+      <option value="Fantasi Tinggi (High Fantasy)">Fantasi Tinggi (High Fantasy)</option>
+      <option value="Fantasi Rendah (Low Fantasy)">Fantasi Rendah (Low Fantasy)</option>
+      <option value="Fiksi Ilmiah">Fiksi Ilmiah</option>
+      <option value="Horor Gotik">Horor Gotik</option>
+      <option value="Misteri Klasik">Misteri Klasik</option>
+      <option value="Romansa Kontemporer">Romansa Kontemporer</option>
+      <option value="Fiksi Sejarah">Fiksi Sejarah</option>
+      <option value="Petualangan & Aksi">Petualangan & Aksi</option>
+      <option value="Biografi & Memoar">Biografi & Memoar</option>
+      <option value="Pengembangan Diri (Self-help)">Pengembangan Diri (Self-help)</option>
+      <option value="Agama & Kepercayaan">Agama & Kepercayaan</option>
+      <option value="Filsafat">Filsafat</option>
+      <option value="Sejarah Dunia">Sejarah Dunia</option>
+      <option value="Politik & Sosial">Politik & Sosial</option>
+      <option value="Bisnis & Ekonomi">Bisnis & Ekonomi</option>
+      <option value="Kesehatan & Gaya Hidup">Kesehatan & Gaya Hidup</option>
+      <option value="Kuliner">Kuliner</option>
+      <option value="Seni & Desain">Seni & Desain</option>
+      <option value="Bahasa & Sastra">Bahasa & Sastra</option>
+      <option value="Puisi / Sajak">Puisi / Sajak</option>
+    </select>
+  </div>
+
+  <!-- Jumlah Halaman -->
+  <div class="mb-3">
+    <label for="bookPages" class="form-label">Jumlah Halaman</label>
+    <input type="number" class="form-control" id="bookPages" required min="1">
+  </div>
+
+  <!-- Tahun Terbit -->
+  <div class="mb-3">
+    <label for="bookPublished" class="form-label">Tahun Terbit</label>
+    <input type="number" class="form-control" id="bookPublished" required min="1000" max="9999">
+  </div>
+
+  <!-- Target Selesai -->
+  <div class="mb-3">
+    <label for="bookTargetDate" class="form-label">Target Selesai Dibaca</label>
+    <input type="date" class="form-control" id="bookTargetDate" required>
+  </div>
+
+  <!-- Cover Buku -->
+  <div class="mb-3">
+    <label for="bookCover" class="form-label">Cover Buku</label>
+    <div class="d-flex gap-2 mb-2">
+      <input type="file" class="form-control" id="bookCover" accept="image/*" required>
+      <button type="button" class="btn btn-outline-primary" id="cameraBtn" title="Ambil Foto dengan Kamera">
+        <i class="fas fa-camera"></i>
+      </button>
+    </div>
+    <div class="form-text">
+      <i class="fas fa-info-circle me-1"></i>
+      Pilih file gambar atau gunakan kamera untuk mengambil foto cover buku
+    </div>
+  </div>
+
+  <!-- Tombol Submit -->
+  <button type="submit" class="btn btn-primary w-100">Tambah Buku</button>
+</form>
+
+                </div>
+                <div class="col-12 book-list">
+                    <div class="section-title"><i class="fas fa-list-alt"></i>
+                        Daftar Buku Bacaan</div>
+                    <div class="section-underline"></div>
+
+                    <div
+                        class="section-desc d-flex align-items-center justify-content-between flex-wrap gap-2">
+                        <span>Lihat dan kelola semua buku bacaanmu di
+                            sini.</span>
+                        <div class="btn-group">
+                            <button type="button"
+                                class="btn btn-outline-primary btn-sm"
+                                id="openAllBtn" title="Buka Semua">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <button type="button"
+                                class="btn btn-outline-secondary btn-sm"
+                                id="closeAllBtn" title="Tutup Semua">
+                                <i class="fas fa-chevron-up"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="bookList" class="accordion"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================== MODALS =================== -->
+        <!-- Toast Notification -->
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="successToast" class="toast" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">Berhasil!</strong>
+                    <button type="button" class="btn-close"
+                        data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    Buku berhasil ditambahkan ke daftar bacaan.
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notification untuk Edit -->
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="editToast" class="toast" role="alert" aria-live="assertive"
+                aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">Berhasil!</strong>
+                    <button type="button" class="btn-close"
+                        data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    Data buku berhasil diperbarui.
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Konfirmasi Hapus Buku -->
+        <div class="modal fade" id="deleteBookModal" tabindex="-1"
+            aria-labelledby="deleteBookModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"
+                            id="deleteBookModalLabel">Konfirmasi Hapus Buku</h5>
+                        <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Apakah Anda yakin ingin menghapus buku ini dari daftar
+                        bacaan?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-danger"
+                            id="confirmDeleteBookBtn">Hapus</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Input Penjadwalan -->
+        <div class="modal fade" id="scheduleModal" tabindex="-1"
+            aria-labelledby="scheduleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="scheduleModalLabel">Atur
+                            Penjadwalan Membaca</h5>
+                        <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="scheduleDate" class="form-label">Tanggal
+                                untuk membaca:</label>
+                            <input type="date" class="form-control"
+                                id="scheduleDate" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary"
+                            id="confirmScheduleBtn">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Input Reminder -->
+        <div class="modal fade" id="reminderModal" tabindex="-1"
+            aria-labelledby="reminderModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="reminderModalLabel">Atur
+                            Reminder Membaca</h5>
+                        <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="reminderTime" class="form-label">Waktu
+                                reminder untuk membaca:</label>
+                            <input type="time" class="form-control"
+                                id="reminderTime" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-success"
+                            id="confirmReminderBtn">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Edit Buku -->
+        <div class="modal fade" id="editBookModal" tabindex="-1"
+            aria-labelledby="editBookModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editBookModalLabel">Edit
+                            Buku</h5>
+                        <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editBookForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+    <label for="editBookAuthor" class="form-label">Penulis</label>
+    <input type="text" class="form-control" id="editBookAuthor" required>
+</div>
+
+<div class="mb-3">
+    <label for="editBookPublished" class="form-label">Tahun Terbit</label>
+    <input type="number" class="form-control" id="editBookPublished" required>
+</div>
+
+<div class="mb-3">
+    <label for="editBookTargetDate" class="form-label">Target Selesai</label>
+    <input type="date" class="form-control" id="editBookTargetDate">
+</div>
+                                    <div class="mb-3">
+                                        <label for="editBookTitle"
+                                            class="form-label">Judul
+                                            Buku</label>
+                                        <input type="text" class="form-control"
+                                            id="editBookTitle" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="editBookGenre"
+                                            class="form-label">Genre
+                                            Buku</label>
+                                        <select class="form-select"
+                                            id="editBookGenre" required>
+                                            <option value disabled>Pilih Genre
+                                                Buku</option>
+                                            <option
+                                                value="Fantasi Tinggi (High Fantasy)">Fantasi
+                                                Tinggi (High Fantasy)</option>
+                                            <option
+                                                value="Fantasi Rendah (Low Fantasy)">Fantasi
+                                                Rendah (Low Fantasy)</option>
+                                            <option value="Fiksi Ilmiah">Fiksi
+                                                Ilmiah</option>
+                                            <option value="Horor Gotik">Horor
+                                                Gotik</option>
+                                            <option
+                                                value="Misteri Klasik">Misteri
+                                                Klasik</option>
+                                            <option
+                                                value="Romansa Kontemporer">Romansa
+                                                Kontemporer</option>
+                                            <option value="Fiksi Sejarah">Fiksi
+                                                Sejarah</option>
+                                            <option
+                                                value="Petualangan & Aksi">Petualangan
+                                                & Aksi</option>
+                                            <option
+                                                value="Biografi & Memoar">Biografi
+                                                & Memoar</option>
+                                            <option
+                                                value="Pengembangan Diri (Self-help)">Pengembangan
+                                                Diri (Self-help)</option>
+                                            <option
+                                                value="Agama & Kepercayaan">Agama
+                                                & Kepercayaan</option>
+                                            <option
+                                                value="Filsafat">Filsafat</option>
+                                            <option
+                                                value="Sejarah Dunia">Sejarah
+                                                Dunia</option>
+                                            <option
+                                                value="Politik & Sosial">Politik
+                                                & Sosial</option>
+                                            <option
+                                                value="Bisnis & Ekonomi">Bisnis
+                                                & Ekonomi</option>
+                                            <option
+                                                value="Kesehatan & Gaya Hidup">Kesehatan
+                                                & Gaya Hidup</option>
+                                            <option
+                                                value="Kuliner">Kuliner</option>
+                                            <option value="Seni & Desain">Seni &
+                                                Desain</option>
+                                            <option
+                                                value="Bahasa & Sastra">Bahasa &
+                                                Sastra</option>
+                                            <option value="Puisi / Sajak">Puisi
+                                                / Sajak</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="editBookPages"
+                                            class="form-label">Jumlah
+                                            Halaman</label>
+                                        <input type="number"
+                                            class="form-control"
+                                            id="editBookPages" required min="1">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="editBookCover"
+                                            class="form-label">Cover
+                                            Buku</label>
+                                        <input type="file" class="form-control"
+                                            id="editBookCover" accept="image/*">
+                                        <div class="form-text">Kosongkan jika
+                                            tidak ingin mengubah cover</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Preview
+                                            Cover</label>
+                                        <div class="text-center">
+                                            <img id="editBookCoverPreview" src
+                                                alt="Preview Cover"
+                                                style="max-width: 200px; max-height: 250px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: none;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-primary"
+                            id="confirmEditBookBtn">Simpan Perubahan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input file tersembunyi untuk kamera -->
+        <input type="file" id="cameraInput" accept="image/*"
+            capture="environment" style="display: none;">
+
+        <!-- Modal Preview Foto -->
+        <div class="modal fade" id="cameraPreviewModal" tabindex="-1"
+            aria-labelledby="cameraPreviewModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cameraPreviewModalLabel">
+                            <i class="fas fa-camera me-2"></i>Preview Foto Cover
+                        </h5>
+                        <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img id="cameraPreview" src alt="Preview Foto"
+                            style="max-width: 100%; max-height: 400px; border-radius: 8px;">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>Batal
+                        </button>
+                        <button type="button" class="btn btn-success"
+                            id="usePhotoBtn">
+                            <i class="fas fa-check me-1"></i>Gunakan Foto Ini
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================== FOOTER =================== -->
+        <footer class="footer">
+            &copy; 2025 Wacana. All rights reserved.
+        </footer>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js">
+        </script>
+
+        <script>
+document.addEventListener("DOMContentLoaded", function () {
+    // === TOMBOL BUKA SEMUA ===
+    document.getElementById("openAllBtn").addEventListener("click", function () {
+        const accordions = document.querySelectorAll(".accordion-collapse");
+        accordions.forEach(item => {
+            item.classList.add("show"); // buka
+        });
+
+        // Optionally ubah status button header-nya jika perlu (hilangkan collapsed)
+        document.querySelectorAll(".accordion-button").forEach(btn => {
+            btn.classList.remove("collapsed");
+        });
+    });
+
+    // === TOMBOL TUTUP SEMUA ===
+    document.getElementById("closeAllBtn").addEventListener("click", function () {
+        const accordions = document.querySelectorAll(".accordion-collapse");
+        accordions.forEach(item => {
+            item.classList.remove("show"); // tutup
+        });
+
+        // Tambahkan kembali collapsed class ke button
+        document.querySelectorAll(".accordion-button").forEach(btn => {
+            btn.classList.add("collapsed");
+        });
+    });
+
+    // === LOAD DATA BUKU ===
+    const token = localStorage.getItem("token");
+    const username = localStorage.getItem("username") || "Pengguna";
+
+    // Jika belum login, arahkan ke halaman index
+    if (!token) {
+        alert("Anda belum login!");
+        window.location.href = "index.html";
+        return;
+    }
+
+    document.getElementById("usernameDisplay").innerText = username;
+
+    // Ambil data buku dari API
+    fetch("https://proyekpemrog.et.r.appspot.com/users/libBooks", {
+        method: "GET",
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === "success") {
+            const bookList = document.getElementById("bookList");
+            bookList.innerHTML = '';
+
+            if (data.data.length === 0) {
+                bookList.innerHTML = "<p class='text-muted'>Anda belum memiliki buku bacaan.</p>";
+                return;
+            }
+
+            data.data.forEach((book, index) => {
+                const progress = Math.round((book.currentPage / book.pageCount) * 100) || 0;
+                const targetDate = book.targetFinishDate?._seconds 
+                    ? new Date(book.targetFinishDate._seconds * 1000).toLocaleDateString('id-ID') 
+                    : "Tidak ditentukan";
+
+                const bookItem = document.createElement("div");
+                bookItem.classList.add("accordion-item", "mb-3");
+
+                bookItem.innerHTML = `
+                    <!-- HEADER ACCORDION -->
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}">
+                            <div class="d-flex align-items-center w-100 justify-content-between">
+                                <!-- Kiri: Gambar & Judul -->
+                                <div class="d-flex align-items-center">
+                                    <img src="${book.imageUrl || 'https://via.placeholder.com/40x60'}"
+                                         alt="${book.title}"
+                                         width="40" height="60"
+                                         style="object-fit: cover; border-radius: 4px; margin-right: 10px;">
+                                    <strong>${book.title}</strong>
+                                </div>
+                                <!-- Kanan: Genre dan Persentase -->
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="badge bg-info text-white">${book.genre}</span>
+                                    <span class="badge bg-light text-dark">${progress}%</span>
+                                </div>
+                            </div>
+                        </button>
+                    </h2>
+
+                    <!-- BODY ACCORDION -->
+                    <div id="collapse${index}" class="accordion-collapse collapse" data-bs-parent="#bookList">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <!-- Kolom Kiri: Gambar Besar -->
+                                <div class="col-md-2 text-center">
+                                    <img src="${book.imageUrl || 'https://via.placeholder.com/100x150'}" alt="${book.title}" class="img-fluid rounded">
+                                </div>
+
+                                <!-- Kolom Kanan: Informasi Buku -->
+                                <div class="col-md-10">
+                                    <p><strong>Penulis:</strong> ${book.author}</p>
+                                    <p><strong>Genre:</strong> ${book.genre}</p>
+                                    <p><strong>Halaman:</strong> ${book.currentPage} / ${book.pageCount}</p>
+                                    <p><strong>Tahun Terbit:</strong> ${book.published}</p>
+                                    <p><strong>Status:</strong> ${book.status}</p>
+                                    <p><strong>Target Selesai:</strong> ${targetDate}</p>
+
+                                    <!-- PROGRES MEMBACA -->
+                                    <div class="mb-2">
+                                        <strong>Progres Membaca:</strong>
+                                        <div class="progress mt-1" style="height: 20px;">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: ${progress}%;" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100">
+                                                ${progress}%
+                                            </div>
+                                        </div>
+                                        <p class="mb-2">Halaman terakhir dibaca: <strong>${book.currentPage}</strong> / ${book.pageCount}</p>
+
+                                        <!-- Update Halaman Terakhir -->
+                                        <div class="d-flex justify-content-between align-items-center flex-nowrap mt-2">
+
+                                            <div class="d-flex ms-auto flex-row">
+                                                                                            <div class="d-flex align-items-center me-3">
+                                                <small class="text-muted">Update halaman saat ini:</small>
+                                            </div>
+                                                <input type="number" class="form-control" style="max-width: 80px;" value="${book.currentPage}" id="inputPage${book.id}">
+                                                <button class="btn btn-success" onclick="updateProgress('${book.id}', ${book.pageCount})">
+                                                    <i class="fas fa-check-circle me-1"></i>Update
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- TOMBOL Aksi -->
+                                    <div class="d-flex justify-content-between align-items-center mt-3 flex-nowrap">
+                                        <!-- Kiri: 3 tombol -->
+                                        <div class="d-flex gap-2 flex-row-reverse">
+                                           <!--- <button class="btn btn-outline-primary w-auto"> 
+                                                <i class="fas fa-calendar-alt me-1"></i> Penjadwalan
+                                            </button>-->
+                                            <button class="btn btn-outline-warning w-auto" onclick="openEditModal('${book.id}', '${book.title}', '${book.author}', '${book.genre}', ${book.pageCount}, ${book.published}, '${book.targetFinishDate?._seconds ? book.targetFinishDate._seconds * 1000 : ''}', '${book.imageUrl || ''}')">
+                                            <i class="fas fa-edit me-1"></i> Edit
+                                            </button>
+                                           <!-- <button class="btn btn-outline-success w-auto">
+                                                <i class="fas fa-bell me-1"></i> Reminder
+                                            </button> -->
+                                        </div>
+                                        <!-- Kanan: Hapus -->
+                                        <button class="btn btn-danger" onclick="deleteBook('${book.id}')">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                bookList.appendChild(bookItem);
+            });
+        } else {
+            alert("Gagal mengambil data buku: " + (data.message || "Terjadi kesalahan"));
+        }
+    })
+    .catch(err => {
+        console.error("Fetch error:", err);
+        alert("Gagal mengambil data dari server.");
+    });
+});
+
+
+// === Function to check token validity ===
+function checkTokenValidity(response) {
+    if (response.status === 401) { // Unauthorized
+        // Show session expired notification
+        Swal.fire({
+            icon: 'warning',
+            title: 'Sesi Telah Berakhir',
+            text: 'Sesi Anda telah berakhir. Silakan login kembali.',
+            confirmButtonColor: '#3085d6',
+            allowOutsideClick: false
+        }).then(() => {
+            // Clear local storage and redirect
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            window.location.href = 'index.html';
+        });
+        return false;
+    }
+    return true;
+}
+
+// Fungsi untuk update progress
+function updateProgress(bookId, totalPages) {
+    const input = document.getElementById(`inputPage${bookId}`);
+    const newPage = parseInt(input.value);
+
+    if (isNaN(newPage) || newPage < 0 || newPage > totalPages) {
+        return;
+    }
+
+    fetch(`https://proyekpemrog.et.r.appspot.com/users/booksStatus/${bookId}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token")
+        },
+        body: JSON.stringify({ currentPage: newPage })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === "success") {
+            const progress = Math.round((newPage / totalPages) * 100);
+
+            // Update progress bar
+            const progressBar = document.querySelector(`#inputPage${bookId}`)
+                .closest('.accordion-body')
+                .querySelector('.progress-bar');
+
+            progressBar.style.width = `${progress}%`;
+            progressBar.setAttribute('aria-valuenow', progress);
+            progressBar.textContent = `${progress}%`;
+
+            // Update teks halaman terakhir
+            const pageText = document.querySelector(`#inputPage${bookId}`)
+                .closest('.accordion-body')
+                .querySelector('p.mb-2 strong');
+            if (pageText) {
+                pageText.innerText = newPage;
+            }
+        }
+    })
+    .catch(err => {
+        console.error("Error updating progress:", err);
+    });
+}
+
+// Event Listener untuk tombol logout
+document.getElementById('logoutButton').addEventListener('click', function () {
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    window.location.href = 'index.html';
+});
+
+// === TAMBAH BUKU ===
+document.getElementById('addBookForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Anda belum login!',
+            text: 'Silakan login terlebih dahulu.',
+            confirmButtonColor: '#3085d6'
+        });
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('title', document.getElementById('bookTitle').value);
+    formData.append('author', document.getElementById('bookAuthor').value);
+    formData.append('genre', document.getElementById('bookGenre').value);
+    formData.append('pageCount', document.getElementById('bookPages').value);
+    formData.append('published', document.getElementById('bookPublished').value);
+    formData.append('targetFinishDate', document.getElementById('bookTargetDate').value);
+    formData.append('image', document.getElementById('bookCover').files[0]);
+
+    Swal.showLoading();
+
+    try {
+        const response = await fetch('https://proyekpemrog.et.r.appspot.com/users/books', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Buku Berhasil Ditambahkan!',
+                text: 'Data buku telah masuk ke perpustakaanmu.',
+                confirmButtonColor: '#28a745'
+            });
+
+            document.getElementById('addBookForm').reset();
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal Menambahkan Buku',
+                text: result.message || 'Terjadi kesalahan saat menyimpan buku.',
+                confirmButtonColor: '#dc3545'
+            });
+        }
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal Terhubung ke Server',
+            text: 'Pastikan koneksi internet stabil.',
+            confirmButtonColor: '#dc3545'
+        });
+        console.error(error);
+    }
+});
+
+// === HAPUS BUKU ===
+function deleteBook(bookId) {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Tidak ada akses',
+            text: 'Silakan login terlebih dahulu.',
+        });
+        return;
+    }
+
+    Swal.fire({
+        title: 'Yakin ingin menghapus?',
+        text: "Data buku akan dihapus secara permanen!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Ya, hapus!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`https://proyekpemrog.et.r.appspot.com/users/books/${bookId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: 'Buku telah dihapus.',
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => location.reload());
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal Menghapus',
+                        text: data.message || 'Terjadi kesalahan.',
+                    });
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Gagal menghubungi server.',
+                });
+            });
+        }
+    });
+}
+</script>
+
+
+<script>
+// Fungsi untuk membuka modal edit
+function openEditModal(bookId, title, author, genre, pageCount, published, targetFinishDate, imageUrl) {
+    const targetDate = targetFinishDate ? new Date(parseInt(targetFinishDate)) : null;
+
+    // Isi form dengan data buku
+    document.getElementById('editBookTitle').value = title;
+    document.getElementById('editBookAuthor').value = author;
+    document.getElementById('editBookGenre').value = genre;
+    document.getElementById('editBookPages').value = pageCount;
+    document.getElementById('editBookPublished').value = published;
+
+    if (targetDate) {
+        document.getElementById('editBookTargetDate').value = targetDate.toISOString().split('T')[0];
+    } else {
+        document.getElementById('editBookTargetDate').value = '';
+    }
+
+    // Atur preview cover
+    const coverPreview = document.getElementById('editBookCoverPreview');
+    if (imageUrl) {
+        coverPreview.src = imageUrl;
+        coverPreview.style.display = 'block';
+    } else {
+        coverPreview.style.display = 'none';
+    }
+
+    // Set bookId untuk digunakan saat submit
+    document.getElementById('editBookForm').dataset.bookId = bookId;
+
+    // Event listener untuk preview cover baru
+    document.getElementById('editBookCover').addEventListener('change', function(e) {
+        if (e.target.files && e.target.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                coverPreview.src = event.target.result;
+                coverPreview.style.display = 'block';
+            };
+            reader.readAsDataURL(e.target.files[0]);
+        }
+    });
+
+    // Event listener untuk tombol Simpan Perubahan
+    document.getElementById('confirmEditBookBtn').onclick = function() {
+        updateBook(bookId);
+    };
+
+    // Tampilkan modal
+    const modal = new bootstrap.Modal(document.getElementById('editBookModal'));
+    modal.show();
+}
+
+// Fungsi untuk mengupdate buku
+function updateBook(bookId) {
+    const token = localStorage.getItem("token");
+    if (!token) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Anda harus login terlebih dahulu'
+        });
+        return;
+    }
+
+    // Validasi form
+    const title = document.getElementById('editBookTitle').value;
+    const author = document.getElementById('editBookAuthor').value;
+    const genre = document.getElementById('editBookGenre').value;
+    const pageCount = document.getElementById('editBookPages').value;
+    const published = document.getElementById('editBookPublished').value;
+
+    if (!title || !author || !genre || !pageCount || !published) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Semua field wajib diisi kecuali cover dan target selesai'
+        });
+        return;
+    }
+
+    // Buat FormData
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('author', author);
+    formData.append('genre', genre);
+    formData.append('pageCount', pageCount);
+    formData.append('published', published);
+
+    // Tambahkan target date jika ada
+    const targetDate = document.getElementById('editBookTargetDate').value;
+    if (targetDate) {
+        formData.append('targetFinishDate', targetDate);
+    }
+
+    // Tambahkan cover jika ada
+    const coverFile = document.getElementById('editBookCover').files[0];
+    if (coverFile) {
+        formData.append('image', coverFile);
+    }
+
+    // Tampilkan loading
+    Swal.fire({
+        title: 'Memproses...',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+    });
+
+    // Kirim request ke API
+    fetch(`https://proyekpemrog.et.r.appspot.com/users/books/${bookId}`, {
+        method: "PATCH",
+        headers: {
+            "Authorization": "Bearer " + token
+        },
+        body: formData
+    })
+    .then(async response => {
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.message || 'Terjadi kesalahan saat memperbarui buku');
+        }
+        return data;
+    })
+    .then(data => {
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: 'Buku berhasil diperbarui',
+            timer: 1500,
+            showConfirmButton: false
+        }).then(() => {
+            // Tutup modal dan refresh halaman
+            const modal = bootstrap.Modal.getInstance(document.getElementById('editBookModal'));
+            modal.hide();
+            location.reload();
+        });
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal memperbarui',
+            text: error.message || 'Terjadi kesalahan saat memperbarui buku'
+        });
+    });
+}
+</script>
+
+    </body>
+</html>

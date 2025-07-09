@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Registrasi - Wacana</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+            rel="stylesheet">
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+            rel="stylesheet">
+        <style>
+        body {
+            background: linear-gradient(135deg, #007bff 0%, #00c6ff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .register-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+        }
+        .register-card {
+            background: rgba(255, 255, 255, 0.95);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.8s ease-out;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo img {
+            max-width: 120px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+        .register-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-weight: 700;
+            font-size: 2rem;
+            background: linear-gradient(135deg, #007bff 0%, #00c6ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 15px 20px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            background: #fff;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 8px;
+        }
+        .btn-register {
+            background: linear-gradient(135deg, #007bff 0%, #00c6ff 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 15px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+        }
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.4);
+            color: white;
+        }
+        .btn-register:active {
+            transform: translateY(0);
+        }
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+        .login-link a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        .login-link a:hover {
+            color: #0056b3;
+        }
+        .input-group-text {
+            background: transparent;
+            border: 2px solid #e9ecef;
+            border-right: none;
+            color: #007bff;
+        }
+        .input-group .form-control {
+            border-left: none;
+        }
+        .input-group .form-control:focus + .input-group-text {
+            border-color: #007bff;
+        }
+        .password-strength {
+            margin-top: 5px;
+            font-size: 0.85rem;
+        }
+        .strength-weak { color: #dc3545; }
+        .strength-medium { color: #ffc107; }
+        .strength-strong { color: #28a745; }
+        @media (max-width: 576px) {
+            .register-container {
+                padding: 8px;
+                max-width: 100%;
+            }
+            .register-card {
+                padding: 25px 18px;
+                margin: 5px;
+                border-radius: 16px;
+            }
+            .logo {
+                margin-bottom: 25px;
+            }
+            .logo img {
+                max-width: 90px;
+                border-radius: 12px;
+            }
+            .register-title {
+                font-size: 1.6rem;
+                margin-bottom: 25px;
+            }
+            .form-control {
+                padding: 12px 14px;
+                font-size: 16px;
+                border-radius: 10px;
+            }
+            .btn-register {
+                padding: 12px;
+                font-size: 1rem;
+                border-radius: 10px;
+            }
+            .login-link {
+                margin-top: 20px;
+                padding-top: 15px;
+            }
+            .form-label {
+                font-size: 0.95rem;
+                margin-bottom: 6px;
+            }
+            .password-strength {
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .register-container {
+                padding: 5px;
+            }
+            .register-card {
+                padding: 20px 15px;
+            }
+            .logo img {
+                max-width: 80px;
+            }
+            .register-title {
+                font-size: 1.4rem;
+            }
+            .form-control {
+                padding: 10px 12px;
+            }
+            .btn-register {
+                padding: 10px;
+            }
+        }
+        
+        @media (max-width: 375px) {
+            .register-container {
+                padding: 3px;
+            }
+            .register-card {
+                padding: 18px 12px;
+                border-radius: 14px;
+            }
+            .logo {
+                margin-bottom: 20px;
+            }
+            .logo img {
+                max-width: 70px;
+                border-radius: 10px;
+            }
+            .register-title {
+                font-size: 1.2rem;
+                margin-bottom: 20px;
+            }
+            .form-control {
+                padding: 8px 10px;
+                font-size: 16px;
+                border-radius: 8px;
+            }
+            .btn-register {
+                padding: 8px;
+                font-size: 0.9rem;
+                border-radius: 8px;
+            }
+            .login-link {
+                margin-top: 15px;
+                padding-top: 12px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 320px) {
+            .register-container {
+                padding: 2px;
+            }
+            .register-card {
+                padding: 15px 10px;
+            }
+            .logo img {
+                max-width: 60px;
+            }
+            .register-title {
+                font-size: 1.1rem;
+            }
+            .form-control {
+                padding: 6px 8px;
+            }
+            .btn-register {
+                padding: 6px;
+                font-size: 0.85rem;
+            }
+        }
+        
+        /* Landscape orientation for mobile */
+        @media (max-height: 600px) and (orientation: landscape) {
+            .register-container {
+                padding: 5px;
+            }
+            .register-card {
+                padding: 15px 20px;
+            }
+            .logo {
+                margin-bottom: 15px;
+            }
+            .logo img {
+                max-width: 60px;
+            }
+            .register-title {
+                font-size: 1.2rem;
+                margin-bottom: 15px;
+            }
+            .mb-3 {
+                margin-bottom: 10px !important;
+            }
+            .mb-4 {
+                margin-bottom: 15px !important;
+            }
+            .login-link {
+                margin-top: 10px;
+                padding-top: 10px;
+                    }
+    </style>
+    </head>
+    <body>
+        <div class="register-container">
+            <div class="register-card">
+                <!-- =================== LOGO =================== -->
+                <div class="logo">
+                    <img src="asset/logo.png" alt="Logo Wacana">
+                </div>
+
+                <h1 class="register-title">
+                    <i class="fas fa-user-plus me-2"></i>Daftar Akun
+                </h1>
+
+                <!-- =================== FORM REGISTER =================== -->
+                <form id="registerForm">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">
+                            <i class="fas fa-user me-2"></i>Username
+                        </label>
+                        <input type="text" class="form-control" id="name"
+                            name="name"
+                            placeholder="Masukkan username" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">
+                            <i class="fas fa-envelope me-2"></i>Email
+                        </label>
+                        <input type="email" class="form-control" id="email"
+                            name="email"
+                            placeholder="Masukkan email Anda" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">
+                            <i class="fas fa-lock me-2"></i>Password
+                        </label>
+                        <div class="input-group">
+                            <input type="password" class="form-control"
+                                id="password" name="password"
+                                placeholder="Masukkan password Anda" required
+                                onkeyup="checkPasswordStrength()">
+                            <span class="input-group-text"
+                                style="cursor: pointer;"
+                                onclick="togglePassword('password')">
+                                <i class="fas fa-eye" id="passwordToggle"></i>
+                            </span>
+                        </div>
+                        <div class="password-strength"
+                            id="passwordStrength"></div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="confirm-password" class="form-label">
+                            <i class="fas fa-lock me-2"></i>Konfirmasi Password
+                        </label>
+                        <div class="input-group">
+                            <input type="password" class="form-control"
+                                id="confirm-password" name="confirm-password"
+                                placeholder="Konfirmasi password Anda" required
+                                onkeyup="checkPasswordMatch()">
+                            <span class="input-group-text"
+                                style="cursor: pointer;"
+                                onclick="togglePassword('confirm-password')">
+                                <i class="fas fa-eye"
+                                    id="confirmPasswordToggle"></i>
+                            </span>
+                        </div>
+                        <div class="password-strength" id="passwordMatch"></div>
+                    </div>
+
+                    <button type="submit" class="btn btn-register w-100">
+                        <i class="fas fa-user-plus me-2"></i>Daftar
+                    </button>
+                </form>
+
+                <!-- =================== LINK LOGIN =================== -->
+                <div class="login-link">
+                    <a href="index.html">
+                        <i class="fas fa-sign-in-alt me-1"></i>Sudah punya akun?
+                        Masuk disini
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js">
+            </script>
+
+        <script>
+        // Toggle password visibility
+        function togglePassword(fieldId) {
+            const passwordInput = document.getElementById(fieldId);
+            const toggleId = fieldId === 'password' ? 'passwordToggle' : 'confirmPasswordToggle';
+            const passwordToggle = document.getElementById(toggleId);
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordToggle.classList.remove('fa-eye');
+                passwordToggle.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                passwordToggle.classList.remove('fa-eye-slash');
+                passwordToggle.classList.add('fa-eye');
+            }
+        }
+
+        // Check password strength
+        function checkPasswordStrength() {
+            const password = document.getElementById('password').value;
+            const strengthDiv = document.getElementById('passwordStrength');
+            
+            if (password.length === 0) {
+                strengthDiv.innerHTML = '';
+                return;
+            }
+            
+            let strength = 0;
+            let feedback = '';
+            
+            if (password.length >= 8) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            
+            if (strength < 3) {
+                feedback = '<i class="fas fa-exclamation-triangle me-1"></i>Password lemah';
+                strengthDiv.className = 'password-strength strength-weak';
+            } else if (strength < 5) {
+                feedback = '<i class="fas fa-info-circle me-1"></i>Password sedang';
+                strengthDiv.className = 'password-strength strength-medium';
+            } else {
+                feedback = '<i class="fas fa-check-circle me-1"></i>Password kuat';
+                strengthDiv.className = 'password-strength strength-strong';
+            }
+            
+            strengthDiv.innerHTML = feedback;
+        }
+
+        // Check password match
+        function checkPasswordMatch() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const matchDiv = document.getElementById('passwordMatch');
+            
+            if (confirmPassword.length === 0) {
+                matchDiv.innerHTML = '';
+                return;
+            }
+            
+            if (password === confirmPassword) {
+                matchDiv.innerHTML = '<i class="fas fa-check-circle me-1"></i>Password cocok';
+                matchDiv.className = 'password-strength strength-strong';
+            } else {
+                matchDiv.innerHTML = '<i class="fas fa-times-circle me-1"></i>Password tidak cocok';
+                matchDiv.className = 'password-strength strength-weak';
+            }
+        }
+
+       document.getElementById("registerForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+    
+    if (password !== confirmPassword) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Password dan konfirmasi password tidak cocok!',
+            confirmButtonColor: '#3085d6'
+        });
+        return;
+    }
+
+    const btn = this.querySelector('button[type="submit"]');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Memproses...';
+    btn.disabled = true;
+
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+
+    fetch('https://proyekpemrog.et.r.appspot.com/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            username: name,
+            email: email,
+            password: password
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Registrasi Berhasil!',
+                text: 'Akun Anda telah berhasil dibuat. Silakan login.',
+                confirmButtonColor: '#28a745',
+                allowOutsideClick: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "index.html"; // Redirect ke halaman login
+                }
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Registrasi Gagal',
+                text: data.message || 'Terjadi kesalahan saat mendaftar',
+                confirmButtonColor: '#dc3545'
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Terjadi Kesalahan',
+            text: 'Gagal terhubung ke server. Silakan coba lagi.',
+            confirmButtonColor: '#dc3545'
+        });
+    })
+    .finally(() => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    });
+});
+    </script>
+    </body>
+</html>
